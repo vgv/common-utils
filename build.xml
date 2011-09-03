@@ -1,4 +1,4 @@
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="smart" default="dist">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="common-utils" default="dist">
 
 	<import file="common.xml"/>
 
@@ -41,7 +41,7 @@
 
 	<target name="jar" depends="compile">
 		<jar basedir="output/classes" jarfile="dist/common-utils.jar"/>
-	</target>	
+	</target>
 
 	<target name="test" depends="compile-test">
 		<test-run/>
