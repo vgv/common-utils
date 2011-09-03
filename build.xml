@@ -1,0 +1,53 @@
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="smart" default="dist">
+
+	<import file="common.xml"/>
+
+	<path id="compile-classpath">
+		<fileset dir="lib/jar" includes="**/*.jar"/>
+	</path>
+
+	<path id="test-compile-classpath">
+		<path refid="compile-classpath"/>
+		<pathelement location="output/classes"/>
+	</path>
+
+	<path id="test-run-classpath">
+		<path refid="test-compile-classpath"/>
+		<pathelement location="output/test-classes"/>
+	</path>
+
+	<target name="clean">
+		<delete dir="output"/>
+		<delete dir="dist"/>
+	</target>
+
+	<target name="download-lib">
+		<ivy-retrieve/>
+	</target>
+
+	<target name="compile" depends="download-lib">
+		<java-compile
+				srcdir="src/main/java"
+				destdir="output/classes"
+				classpathref="compile-classpath"/>
+	</target>
+
+	<target name="compile-test" depends="compile">
+		<java-compile
+				srcdir="src/test/java"
+				destdir="output/test-classes"
+				classpathref="test-compile-classpath"/>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar basedir="output/classes" jarfile="dist/common-utils.jar"/>
+	</target>	
+
+	<target name="test" depends="compile-test">
+		<test-run/>
+	</target>
+
+	<target name="dist" depends="clean, jar">
+	</target>
+
+</project>
