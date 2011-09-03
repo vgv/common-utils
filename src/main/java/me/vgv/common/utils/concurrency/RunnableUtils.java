@@ -27,29 +27,21 @@ public final class RunnableUtils {
 	 * @param other  остальные задания, если есть
 	 * @return одно задание последовательно выполняющее все указанные задания
 	 */
-	public static Runnable combine(Runnable first, Runnable second, Runnable... other) {
+	public static Runnable combine(final Runnable first, final Runnable second, final Runnable... other) {
 		if (first == null) {
 			throw new NullPointerException("first runnable parameter must be not null");
 		}
 		if (second == null) {
 			throw new NullPointerException("second runnable parameter must be not null");
 		}
-		if (other == null) {
-			// чтобы избежать проверок потом
-			other = new Runnable[0];
-		}
-
-		final Runnable firstCommand = first;
-		final Runnable secondCommand = second;
-		final Runnable[] otherCommands = other;
 
 		// сконструируем новый объект
 		return new Runnable() {
 			@Override
 			public void run() {
-				firstCommand.run();
-				secondCommand.run();
-				for (Runnable command : otherCommands) {
+				first.run();
+				second.run();
+				for (Runnable command : other) {
 					command.run();
 				}
 			}
