@@ -11,7 +11,17 @@ public final class InvokeUtils {
 	private InvokeUtils() {
 	}
 
-	private static final int AVAILABLE_PROCESSORS = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+	private static final int AVAILABLE_PROCESSORS;
+
+	static {
+		int processors = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+		if (processors < 4) {
+			// даже если выполнение происходит на однопроцессорной машине - все равно будем создавать несколько рабочих потоков
+			processors = 4;
+		}
+
+		AVAILABLE_PROCESSORS = processors;
+	}
 
 	// для выполнения задач, которые надо выполнить сейчас
 	private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(AVAILABLE_PROCESSORS, new LowPriorityDaemonThreadFactory("CA-daemon"));
@@ -70,6 +80,14 @@ public final class InvokeUtils {
 		} else {
 			return SCHEDULED_EXECUTOR.schedule(task, millis, TimeUnit.MILLISECONDS);
 		}
+	}
+
+	public static void invokeAsyncWithFixedDelay(final Runnable task, long initialDelayMillis, long delayMillis) {
+		SCHEDULED_EXECUTOR.scheduleWithFixedDelay(task, initialDelayMillis, delayMillis, TimeUnit.MILLISECONDS);
+	}
+
+	public static void invokeAsyncAtFixedRate(final Runnable task, long initialDelayMillis, long periodMillis) {
+		SCHEDULED_EXECUTOR.scheduleAtFixedRate(task, initialDelayMillis, periodMillis, TimeUnit.MILLISECONDS);
 	}
 
 }
