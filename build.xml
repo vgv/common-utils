@@ -43,11 +43,15 @@
 		<jar basedir="output/classes" jarfile="dist/common-utils.jar"/>
 	</target>
 
+	<target name="jar-sources" depends="jar">
+		<jar basedir="src/main/java" jarfile="dist/common-utils-sources.jar"/>
+	</target>
+
 	<target name="test" depends="compile-test">
 		<test-run/>
 	</target>
 
-	<target name="dist" depends="clean, jar">
+	<target name="dist" depends="clean, test, jar, jar-sources">
 	</target>
 
 </project>
