@@ -41,9 +41,6 @@
 
 	<target name="package" depends="compile">
 		<jar basedir="output/classes" jarfile="dist/common-utils.jar"/>
-	</target>
-
-	<target name="package-sources" depends="package">
 		<jar basedir="src/main/java" jarfile="dist/common-utils-sources.jar"/>
 	</target>
 
@@ -51,6 +48,6 @@
 		<test-run/>
 	</target>
 
-	<target name="dist" depends="clean, test, package, package-sources"/>
+	<target name="dist" depends="clean, test, package"/>
 
 </project>
