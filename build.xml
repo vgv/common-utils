@@ -1,4 +1,4 @@
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="common-utils" default="dist">
+<project name="common-utils" default="dist">
 
 	<import file="common.xml"/>
 
@@ -39,19 +39,18 @@
 				classpathref="test-compile-classpath"/>
 	</target>
 
-	<target name="jar" depends="compile">
+	<target name="package" depends="compile">
 		<jar basedir="output/classes" jarfile="dist/common-utils.jar"/>
 	</target>
 
-	<target name="jar-sources" depends="jar">
+	<target name="package-sources" depends="package">
 		<jar basedir="src/main/java" jarfile="dist/common-utils-sources.jar"/>
 	</target>
 
-	<target name="test" depends="compile-test">
+	<target name="test" depends="clean, compile, compile-test, package">
 		<test-run/>
 	</target>
 
-	<target name="dist" depends="clean, test, jar, jar-sources">
-	</target>
+	<target name="dist" depends="clean, test, package, package-sources"/>
 
 </project>
